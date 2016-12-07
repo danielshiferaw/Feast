@@ -11,8 +11,10 @@ import {
   TouchableHighlight,
   Dimensions,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 
+import Button from 'apsl-react-native-button';
 
 import {
   NavigationProvider,
@@ -27,6 +29,8 @@ import {
 
 import Alerts from '../constants/Alerts';
 import Colors from '../constants/Colors';
+const dimensionWindow = Dimensions.get('window');
+
 
 @withNavigation
 class BackButton extends React.Component {
@@ -61,6 +65,31 @@ data = {
     "proteins": 5,
   };
 
+@withNavigation
+class AddButton extends React.Component {
+  render() {
+  return (
+    <View style = {{alignItems: "center"}}>
+    <TouchableOpacity onPress={this._goToCustomAdd}>
+   {/* need to have text inside of Touchable Opacity for callbuck func to work, I believe  with text in it*/}
+     <Text style={styles.hiddenText}>"          "</Text>
+     <FontAwesome 
+      name={'plus'}
+        size={20}
+        color={'white'}
+        style = {{"bottom": 0}}
+      />
+            </TouchableOpacity> 
+
+      </View>
+      )
+  }
+
+   _goToCustomAdd = () => {
+    this.props.navigator.push(Router.getRoute('add'));
+  }
+}
+
 export default class FoodScreen extends React.Component {
 
    static route = {
@@ -68,7 +97,8 @@ export default class FoodScreen extends React.Component {
       title: 'Nutrition Info',
       backgroundColor: 'grey',
       tintColor: '#fff',
-      renderLeft: (route, props) => <BackButton/>
+      renderLeft: (route, props) => <BackButton/>,
+      renderRight: (route, props) => <AddButton/>
     }
   }
   
@@ -121,8 +151,9 @@ export default class FoodScreen extends React.Component {
         <Text style = {styles.text}>
           Rice
         </Text>
-
-
+        <View style = {styles.sourceImageView}>
+                <Image source={{uri: this.props.route.params.source}} style={styles.sourceImage} />   
+        </View>  
         <View style={styles.item}>
           <Text style={styles.label}>Carbs</Text>
           <View style = {styles.data}>
@@ -159,14 +190,17 @@ export default class FoodScreen extends React.Component {
            <Text style={styles.dataNumber}>{data.proteins}</Text>
           </View>  
           </View>  
-             <TouchableOpacity
-        onPress = {this._goToLog}
-        >
-        <Text style = {styles.logText}>
-        Log
-        </Text>
-        </TouchableOpacity>
-          </View>
+          <View style={styles.button}>
+        <Button style = {styles.addButton}  textStyle={styles.addText} onPress={this._goToAdd}>
+              Add to Log!
+        </Button>
+        <View style={{padding: 10}}>
+        </View>
+        <Button style = {styles.logButton}  textStyle={styles.logText} onPress={this._goToLog}>
+              No, just go to Log!
+        </Button>
+        </View>
+        </View>
           
        
 
@@ -178,6 +212,12 @@ export default class FoodScreen extends React.Component {
   _goToLog = () => {
           this.props.navigator.push(Router.getRoute('log'));
   }
+
+
+   _goToAdd = () => {
+          this.props.navigator.push(Router.getRoute('add', {name: 'Rice', source: this.props.route.params.source, 
+            carbs: data.carbs, sugars: data.sugars, fats: data.fats , proteins: data.proteins}));
+  }
 }
 
 const styles = StyleSheet.create({
@@ -187,10 +227,47 @@ const styles = StyleSheet.create({
     marginTop: 6,
     flexDirection: 'column',
   },
+  button: {
+    paddingTop: 20,
+    flexDirection: 'row',
+    justifyContent: "space-around",
+  },
+  sourceImage: {
+    height: 100,
+    width: 100,
+    borderRadius: 50,
+  },
+   /* important: if you want to just specify child elements' positions according to the parent and not
+   * affect the position of other child elements, use absolute positioning (avoid messing with
+   * margins/paddings to achieve that effect) but then relative positioning won't work.
+   */
+  sourceImageView: {
+    alignSelf: 'center',
+  },
   text: {
     color: 'white',
     textAlign: 'center',
     fontSize: 48,
+  },
+  addButton: {
+    backgroundColor: "#40E0D0", 
+    width: 150,
+    height: 50,
+    alignSelf: "center",
+  },
+  addText: {
+    color: "white",
+    fontSize: 19,
+  },
+   logButton: {
+    backgroundColor: "#0000CD", 
+    width: 150,
+    height: 50,
+    alignSelf: "center",
+  },
+    logText: {
+    color: "white",
+    fontSize: 18,
   },
   item: {
     flexDirection: 'column',
@@ -236,13 +313,6 @@ const styles = StyleSheet.create({
   },
   steals: {
     backgroundColor: '#4D98E4'
-  },
- 
-  logText: {
-   // position: 'absolute', // used to set fix positions to say set something off of edge of screen?
-    color: 'yellow',
-    textAlign: 'center',
-    fontSize: 36,
   },
     /* hack to make sure text for back button does not show */
   hiddenText: {

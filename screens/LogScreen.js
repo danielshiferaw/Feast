@@ -43,8 +43,7 @@ import Alerts from '../constants/Alerts';
 import Colors from '../constants/Colors';
 
 const PaddingSize = 20;
-const TickWidth = PaddingSize * 2;
-const AnimationDurationMs = 500;
+const TickWidth = PaddingSize*2;
 
 const dimensionWindow = Dimensions.get('window');
 
@@ -56,23 +55,32 @@ class LogGraph extends React.Component {
 
   constructor() {
     super();
-    data = [
+  {/* Note; A JavaScript date can be written as a string: Wed Dec 07 2016 04:15:07 GMT-0800 (PST) or as a number: 1481112907590.
+    * new Date() uses current date and time. Simpler: October 13, 2014 11:13:00.
+    * Here is how you can set Dates in Javascript from year -> second. 
+    * good example of modern collection work and for loops too.
+    * Aside:  good example of type conversions and splitting on whitespace. 
+    * does not include leading/trailing whitespace. can do .match(/\S+/g) to get all non-whitespace 
+    * chars matched. if no matches, returns null so instead do str.match(/\S+/g) || []
+    */}
+    data = []
+    values = [260, 300, 330, 300, 310, 290, 260, 210, 180, 100, 100, 120, 140, 170, 200, 210, 190, 160, 150, 170, 200, 230, 270, 290];
+    days = [9];
+    for (let day in days) {
+      for (let i = 0; i < 24; i = i + 3) {
+        date = "December " + day.toString() + ", " + "2016 " + i.toString() + ":00:00";
+        data.push({date: new Date(date), value: values[i]});
+      }
+    }
 
-    {date: new Date(2016, 11, 1), value: 150},
-    {date: new Date(2016, 11, 2), value: 100},
-    {date: new Date(2016, 11, 3), value: 200},
-    {date: new Date(2016, 11, 4), value: 50},
-    {date: new Date(2016, 11, 5), value: 100},
-    {date: new Date(2016, 11, 6), value: 250},
-    {date: new Date(2016, 11, 7), value: 150},
-    {date: new Date(2016, 11, 8), value: 200},
-    {date: new Date(2016, 11, 9), value: 150},
-    {date: new Date(2016, 11, 10), value: 100},
-  ];
+    
   
-    graphWidth = Math.round(dimensionWindow.width * 0.9) - PaddingSize * 2;
-    graphHeight = Math.round(dimensionWindow.height * 0.5) - PaddingSize * 2;
+    /* Work around to get horizontal scrolling: assume some width to start */
+    graphWidth = Math.round(dimensionWindow.width*.9) - PaddingSize*2;
+    graphHeight = Math.round(dimensionWindow.height * .6) - PaddingSize * 2;
 
+
+    // we'll have PaddingSize pixels for each data point horizontally
 
     // create D3 scale time object for x-axis for graph
     scaleX = d3.scale.scaleTime()
@@ -130,13 +138,9 @@ class LogGraph extends React.Component {
       x : scaleX,
     } = graphUtils.scale;
 
-    const tickXFormat = scaleX.tickFormat(null, '%b %d');
-
-
 
 
     return ( <View style={styles.container}>
-      {tickXFormat}
         <View style={styles.graph}>
         <Surface width={graphUtils.width} height={graphUtils.height}>
           <Group x={0} y={0}>
@@ -155,10 +159,17 @@ class LogGraph extends React.Component {
             const tickStyles = {};
             tickStyles.width = TickWidth;
             tickStyles.left = tick.x - (TickWidth / 2);
-
+            /* good example of type conversions */
+            dateData = tick.datum.date;
+            month = parseInt(dateData.getMonth()) + 1;
+            month = month.toString() + "-";
+            day = dateData.getDate() + " ";
+           // year = dateData.getFullYear();
+            hours = dateData.getHours() + ":00";
+            date = month + day /* year */ + hours;
             return (
               <Text key={index} style={[styles.tickLabelX, tickStyles]}>
-                {tickXFormat(tick.datum.date)}
+                {date}
               </Text>
             );
           })}
@@ -177,7 +188,7 @@ class LogGraph extends React.Component {
             return (
               <View key={index} style={[styles.tickLabelY, tickStyles]}>
                 <Text style={styles.tickLabelYText}>
-                  {value}
+                  {value}{}
                 </Text>
               </View>
             );
@@ -201,21 +212,16 @@ class LogGraph extends React.Component {
 }
 
     
-
-
- 
-
-
 @withNavigation
-class BackButton extends React.Component {
+class AddButton extends React.Component {
   render() {
   return (
     <View style = {{alignItems: "center"}}>
-    <TouchableOpacity onPress={this._goBack}>
+    <TouchableOpacity onPress={this._goToAdd}>
    {/* need to have text inside of Touchable Opacity for callbuck func to work, I believe  with text in it*/}
      <Text style={styles.hiddenText}>"          "</Text>
      <FontAwesome 
-      name={'chevron-left'}
+      name={'plus'}
         size={20}
         color={'white'}
         style = {{"bottom": 0}}
@@ -226,22 +232,48 @@ class BackButton extends React.Component {
       )
   }
 
-   _goBack = () => {
-    if (this.props.navigator.getCurrentIndex() > 0) {
-      this.props.navigator.pop();
-    }
+   _goToAdd = () => {
+    this.props.navigator.push(Router.getRoute('add'));
   }
 }
 
-/* Get data you need for line graph! */
+ 
+
+
+@withNavigation
+class BookButton extends React.Component {
+  render() {
+  return (
+    <View style = {{alignItems: "center"}}>
+    <TouchableOpacity onPress={this._goToBook}>
+   {/* need to have text inside of Touchable Opacity for callbuck func to work, I believe  with text in it*/}
+     <Text style={styles.hiddenText}>"          "</Text>
+     <FontAwesome 
+      name={'book'}
+        size={20}
+        color={'white'}
+        style = {{"bottom": 0}}
+      />
+            </TouchableOpacity> 
+
+      </View>
+      )
+  }
+
+   _goToBook = () => {
+    this.props.navigator.push(Router.getRoute('book'));
+  }
+}
+
 export default class LogScreen extends React.Component {
 
     static route = {
       navigationBar: {
-        title: 'Log',
+        title: 'CGM Log',
         backgroundColor: 'grey',
         tintColor: '#fff',
-        renderLeft: (route, props) => <BackButton/>
+        renderLeft: (route, props) => <BookButton/>,
+        renderRight: (route, props) => <AddButton/>
   }
 }
      
@@ -258,12 +290,20 @@ export default class LogScreen extends React.Component {
       */}
         <ScrollView
             horizontal
-            showsHorizontalScrollIndicator={true}
-            showsVerticalScrollIndicator={true}
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
             alwaysBounceVertical={true} contentContainerStyle={styles.scroll} 
         >
+        <View style={{padding: 30}}>
+        <Text style={styles.bloodGlucoseText}>
+        g/dl
+        </Text>
         <LogGraph/>  
+        </View>
       </ScrollView>
+      <Text style={styles.dateText}>
+        Time
+      </Text>
       </View>
     );
     }
@@ -284,6 +324,7 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     position: 'absolute',
     bottom: 0,
+    width: 50,
     fontSize: 14,
     textAlign: 'center',
     color: "white",
@@ -314,24 +355,23 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
     borderRadius: 100,
   },
-  button: {
-    marginTop: 150,
-    alignSelf: 'center',
-    marginBottom: 50,
-    fontSize: 36,
-  },
-  logText: {
-    color: 'green',
-    textAlign: 'center',
-    fontSize: 36,
-  },
     /* hack to make sure text for back button does not show */
   hiddenText: {
     color: "#4c4c4c",
     fontSize: 10,
   },
   graph: {
-    paddingBottom: 40,
+    paddingBottom: 80,
+  },
+  dateText: {
+    fontSize: 18,
+    textAlign: "center",
+    paddingBottom: 10,
+    color: "white",
+  },
+  bloodGlucoseText: {
+    fontSize: 18,
+    textAlign: "right",
+    color: "white",
   }
-
 });

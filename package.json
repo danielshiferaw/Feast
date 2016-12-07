@@ -6,9 +6,12 @@
   "private": true,
   "main": "main.js",
   "dependencies": {
-    "exponent": "~11.0.2",
     "@exponent/vector-icons": "~2.0.3",
+    "apsl-react-native-button": "^3.0.2",
+    "exponent": "~11.0.2",
     "react": "~15.3.2",
-    "react-native": "git+https://github.com/exponentjs/react-native#sdk-11.0.3"
+    "react-native": "git+https://github.com/exponentjs/react-native#sdk-11.0.3",
+    "react-native-instagram-share": "0.0.8",
+    "react-native-share": "^1.0.17"
   }
 }
