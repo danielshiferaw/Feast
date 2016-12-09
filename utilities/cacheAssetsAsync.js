@@ -18,7 +18,7 @@ function cacheImages(images) {
     if (typeof image === 'string') {
       return Image.prefetch(image);
     } else {
-      return Asset.fromModule(image).downloadAsync();
+      return Asset.fromModule(image).downLoadAsync();
     }
   });
 }

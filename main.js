@@ -20,6 +20,11 @@ import {
 } from '@exponent/ex-navigation';
 
 import Router from './navigation/Router';
+
+/* critical example of preloading and caching assets for later. also look into back-end work
+ * with registering for push notifications
+ */
+
 import cacheAssetsAsync from './utilities/cacheAssetsAsync';
 
 
@@ -45,19 +50,20 @@ class App extends React.Component {
     this._loadAssetsAsync();
   }
 
+  cacheImages = (images) => {
+
+  }
+
   async _loadAssetsAsync() {
+    /*
     try {
-      await cacheAssetsAsync({
-       /* specify later
-       images: [
-          require('./assets/images/exponent-wordmark.png'),
-        ],
-        fonts: [
-          FontAwesome.font,
-          {'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf')},
-        ],
-        */
-      });
+      await cacheAssetsAsync({images: [require("./assets/images/food_photos/vanilla_cupcake.jpg"), 
+        require("./assets/images/food_photos/tacos.jpg"), require("./assets/images/food_photos/veggie_burger.jpg"),
+   require("./assets/images/food_photos/lamb_gyro.jpg"), require("./assets/images/food_photos/egg_biscut.jpg"),
+   require("./assets/images/food_photos/steak_with_mushrooms.jpg"), require("./assets/images/food_photos/pizza.jpg"), 
+   require("./assets/images/question.png"),],
+   fonts: [],
+          });
     } catch(e) {
       console.warn(
         'There was an error caching assets (see: main.js), perhaps due to a ' +
@@ -67,9 +73,14 @@ class App extends React.Component {
     } finally {
       this.setState({appIsReady: true});
     }
+    */
+    this.setState({appIsReady: true});
   }
 
+   
+
   render() {
+
     if (this.state.appIsReady) {
       return (
         <View style={styles.container}>
@@ -82,17 +93,14 @@ class App extends React.Component {
             {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
             {Platform.OS === 'android' && <View style={styles.statusBarUnderlay} />}
 
-
-
       </View>
       );
-    }
-    else {
+    } else {
       return (
         <Exponent.Components.AppLoading />
-      );
+        );
+      }
     }
-  }
 }
 
 

@@ -32,10 +32,20 @@ import Alerts from '../constants/Alerts';
 import Colors from '../constants/Colors';
 import Fonts from '../constants/Fonts';
 
-const dimensionWindow = Dimensions.get('window');
+import LogInformation from '../api/LogInformation';
+
+/* good social library */
+import Share, {ShareSheet} from 'react-native-share';
 
 
 
+ 
+ pad = (num) => {
+  if (num.length == 1) {
+    num = "0" + num;
+  }
+  return num;
+}
 @withNavigation
 class BackButton extends React.Component {
 
@@ -86,44 +96,47 @@ class BackButton extends React.Component {
   }
 }
 
-@withNavigation
-class AddButton extends React.Component {
-  render() {
-  return (
-    <View style = {{alignItems: "center"}}>
 
-    <Button style={{backgroundColor: Colors.navBar, borderColor: Colors.navBar}} onPress={this._goToCustomAdd}>
-     <FontAwesome 
-      name={'plus'}
-        size={20}
-        color={'white'}
-        style = {{"bottom": 0}}
-      />
-      </Button>
-    </View>
-      )
-  }
 
-   _goToCustomAdd = () => {
-    this.props.navigator.push(Router.getRoute('add'));
-  }
-}
+export default class FoodEntryScreen extends React.Component {
 
-export default class FoodScreen extends React.Component {
+  _share = () => {  
+
+        let shareOptions = {
+            title: "From Feast: ",
+            url: this.state.image,
+         };
+        Share.open(shareOptions).then(function(success, activityType) {
+          if(success) {
+          } else {
+             console.log('user did not share');
+          }}).catch(function(error) {
+          console.log('There has been a problem with your fetch operation: ' + error.message);
+          // ADD THIS THROW error
+          throw error;
+        });
+    }
+
 
    static route = {
     navigationBar: {
-      title: <Text style={{fontFamily: Fonts.textFont, fontSize: 18, color:  Colors.background}}> Food Entry </Text>,
+      title: <Text style={{fontFamily: Fonts.TextFont, fontSize: 18, color:  'white'}}> Food Entry </Text>,
       backgroundColor: Colors.navBar,
       tintColor: Colors.navTint,
       renderLeft: (route, props) => <View style={{paddingLeft: 7}}><BackButton/></View>,
-      renderRight: (route, props) => <View style={{paddingRight: 7}}><AddButton/></View>,
     }
   }
   
   constructor(props) {
     super(props);
     data = this.props.route.params.data;
+    image = "";
+        if (data.source) {
+          image = data.source;
+        } 
+        else {
+          image = LogInformation.names[data.name];
+        }
 
     const width = this.getWidth(data);
     this.state = {
@@ -132,6 +145,7 @@ export default class FoodScreen extends React.Component {
         sugars: new Animated.Value(width.sugars),
         fats: new Animated.Value(width.fats),
         proteins: new Animated.Value(width.proteins),
+        image: image,
       };
     }
 
@@ -172,18 +186,31 @@ export default class FoodScreen extends React.Component {
 
         <View style={styles.header}>
         <View style={{padding: 10}}/>
-            <Image source={{uri: data.source}} style={styles.sourceImage} />   
+        {this.state.data.source &&
+         <Image source={{ uri: this.state.image}} style={styles.sourceImage} />
+        }
+       {!this.state.data.source &&
+         <Image source={this.state.data.uri} style={styles.sourceImage} />
+       }
             <View style={{padding: 5}}/>
           <Text style = {styles.nameText}>
           {data.name}
-        </Text>    
+        </Text>
         <View style={{padding: 2}}/>
         <Text style = {styles.dateText}>
           {data.date}
         </Text>
+        <Button textStyle={styles.shareText} style={styles.button} onPress={this._share}>
+           <FontAwesome 
+            name={'share'}
+            size={20}
+            color={Colors.tabSelected}
+            style = {{left: 150, top: 8}}
+        />
+        </Button>
         </View>
          
-         <View style = {styles.graph}>
+             <View style = {styles.graph}>
         <View style={styles.item}>
           <Text style={styles.label}>Carbs</Text>
           <View style = {styles.data}>
@@ -220,19 +247,7 @@ export default class FoodScreen extends React.Component {
            <Text style={styles.dataNumber}>{data.proteins}</Text>
           </View>  
           </View>  
-          </View>
-           <View style={styles.buttonView}>
-              <View style = {styles.addButton}>
-              <Text style={styles.addText} onPress={this._goToAdd}>
-                  Add to Log
-              </Text>
-              </View>
-              <View style = {styles.scanButton}>
-               <Text style={styles.scanText} onPress={this._goToScan}>
-                 Scan again
-                </Text>
-              </View>
-            </View>          
+          </View>          
         </View>      
     );
   }
@@ -250,19 +265,19 @@ export default class FoodScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-   container: {
+  container: {
     backgroundColor: Colors.background,
     flex: 1,
   },
   header: {
     height: 200,
-    paddingBottom: 20,
+    marginBottom: 30,
   },
   sourceImage: {
-    paddingTop: 100,
-    height: 100,
-    width: 100,
-    borderRadius: 50,
+    paddingTop: 20,
+    height: 120,
+    width: 120,
+    borderRadius: 60,
     alignSelf: 'center',
   },  
   nameText: {
@@ -275,17 +290,47 @@ const styles = StyleSheet.create({
   dateText: {
     color: Colors.textFont,
     textAlign: 'center',
+    fontSize: 18,
+    fontFamily: Fonts.textFont,
+  },
+  buttonView: {
+    flexDirection: 'column',
+    height: 200,
+  },
+   nameText: {
+    color: Colors.textFont,
+    textAlign: 'center',
+    fontSize: 28,
+    fontWeight: Fonts.header,
+    fontFamily: Fonts.textFont,
+  },
+  dateText: {
+    color: Colors.textFont,
+    textAlign: 'center',
     fontSize: 12,
     fontFamily: Fonts.textFont,
   },
+  button: {
+    height: 20,
+    width: 80,
+    backgroundColor: Colors.background,
+    borderColor: Colors.background,
+    justifyContent: 'center',
+    marginBottom: 20,
+  },
+  shareText: {
+    textAlign: 'center',
+    color: Colors.background,
+    fontSize: 14,
+    alignSelf: 'stretch',
+  },
   graph: {
-    paddingTop: 10,
-   // borderWidth: 2flex ,
+    marginTop: 30,
     width: 300,
     alignSelf: 'center',
     borderColor: Colors.textFont,
     backgroundColor: 'white',
-    flex: 1,
+    height: 210,
   },
   /* following few tags give decent idea of how to 
    * have induce circular borders in general
@@ -339,29 +384,5 @@ const styles = StyleSheet.create({
   },
   steals: {
     backgroundColor: '#4D98E4'
-  },
-  buttonView: {
-    flexDirection: 'row',
-    height: 100,
-  },
-  addButton: {
-    flex: .35,
-    padding: 30,
-  },
-  addText: {
-    color: Colors.textFont,
-    fontSize: 24,
-    fontFamily: Fonts.textFont,
-    fontWeight: Fonts.header,
-  },
-  scanButton: {
-    flex: .35,
-    padding: 30,
-  },
-  scanText: {
-    color: Colors.textFont,
-    fontSize: 24,
-    fontFamily: Fonts.textFont,
-    fontWeight: Fonts.header,
   },
 });

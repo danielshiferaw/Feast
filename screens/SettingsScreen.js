@@ -22,6 +22,7 @@ import {
 
 import Alerts from '../constants/Alerts';
 import Colors from '../constants/Colors';
+import Fonts from '../constants/Fonts';
 import Settings from '../api/Settings';
 
 @withNavigation

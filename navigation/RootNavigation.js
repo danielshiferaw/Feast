@@ -43,7 +43,7 @@ export default class RootNavigation extends React.Component {
           id='scan'
           style = {styles.tab}
           selectedStyle = {styles.tab}
-          renderIcon={isSelected => this._renderIcon('home', isSelected)}>
+          renderIcon={isSelected => this._renderIcon('camera', isSelected)}>
           <StackNavigation initialRoute='scan' />
         </TabNavigationItem>
 
@@ -72,7 +72,7 @@ export default class RootNavigation extends React.Component {
       <FontAwesome
         name={name}
         size={30}
-        color={isSelected ? Colors.tabIconSelected : "white"}
+        color={isSelected ? Colors.tabSelected : Colors.tab}
       />
     );
   }
@@ -99,7 +99,7 @@ export default class RootNavigation extends React.Component {
 
 const styles = StyleSheet.create({
   tab: {
-    backgroundColor: '#7F7F7F',
+    backgroundColor: Colors.tabBar,
   },
   selectedTab: {
     color: Colors.tabIconSelected,
