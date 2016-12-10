@@ -151,9 +151,9 @@ class Row extends React.Component {
    _share = () => {  
 
         let shareOptions = {
-            title: "From Feast ",
+            title: "",
             url: this.state.image,
-            message: "With Love",
+            message: "From Feast With Love",
          };
         Share.open(shareOptions).then(function(success, activityType) {
           }).then({}).catch(function(error) { 

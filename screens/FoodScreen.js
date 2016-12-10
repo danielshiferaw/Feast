@@ -358,7 +358,8 @@ const styles = StyleSheet.create({
     height: 150,
   },
   buttonText: {
-    fontSize: 22,
+    fontSize: 18,
+    padding: 15,
     color: Colors.background,
     alignSelf: 'center',
     fontWeight: Fonts.header,
@@ -369,8 +370,8 @@ const styles = StyleSheet.create({
     borderColor: '#48BBEC',
     borderWidth: 1,
     borderRadius: 8,
-    marginBottom: 10,
+    marginBottom: 45,
     alignSelf: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   }, 
 });
