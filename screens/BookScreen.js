@@ -216,7 +216,7 @@ class Row extends React.Component {
             name={'share'}
             size={20}
             color={Colors.tabSelected}
-            style = {{left: 75, top: 7}}
+            style = {{top: -75, left: 60}}
         />
         </Button>
         </View>
@@ -231,7 +231,7 @@ export default class BookScreen extends React.Component {
 
     static route = {
       navigationBar: {
-        title: <Text style={{fontFamily: 'American Typewriter', fontSize: 24, color:  Colors.tabSelected,}}> Feast </Text>,
+        title: <Text style={{fontFamily: Fonts.textFont, fontSize: 18, color:  'white'}}> View Log </Text>,
         backgroundColor: Colors.navBar,
         tintColor: Colors.navTint,
          renderLeft: (route, props) => <View style={{paddingLeft: 7}}><BackButton/></View>,
@@ -267,19 +267,25 @@ export default class BookScreen extends React.Component {
       return (
          <View style={styles.container}>
           <View style = {styles.actionBar}>
-          <Button style = {styles.actionButton}  textStyle={styles.actionText} onPress={this._goToLog}>
-                Blood Sugar
-          </Button>
-           <Button style = {styles.actionButtonHighlight}  textStyle={styles.actionText}>
-                Food Entries
-          </Button>
+          <TouchableOpacity style = {styles.actionButton} onPress={this._goToLog}>
+              <Text style={styles.actionText}>
+                Blood Sugar Graph
+              </Text>
+          </TouchableOpacity>
+           <TouchableOpacity style = {styles.actionButtonHighlight}>
+            <Text style={styles.actionText}>
+                Food Entries List
+            </Text>
+          </TouchableOpacity>
         </View>
        
-      
+      <View style={{marginBottom: 10}}/>
       <ListView
         style={styles.container}
         dataSource={this.state.dataSource}
         renderRow={(data) => <Row {...data} />}
+        renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />}
+
       />
       </View>
       );
@@ -291,8 +297,14 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.backgroundColor,
     flex: 1,
   },
+   separator: {
+    flex: 1,
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: '#8E8E8E',
+    marginBottom: 10,
+  },
   header: {
-    height: 150,
+    height: 100,
     backgroundColor: 'white',
     flex: 1,
     flexDirection: 'row',
@@ -309,7 +321,6 @@ const styles = StyleSheet.create({
   },
     nameText: {
     color: Colors.textFont,
-    textAlign: 'center',
     fontSize: 28,
     fontWeight: Fonts.header,
     fontFamily: Fonts.textFont,
@@ -318,15 +329,8 @@ const styles = StyleSheet.create({
   },
   dateText: {
     color: Colors.textFont,
-    textAlign: 'center',
     fontSize: 18,
     fontFamily: Fonts.textFont,
-    alignSelf: 'stretch',
-  },
-  shareText: {
-    textAlign: 'center',
-    color: Colors.background,
-    fontSize: 14,
     alignSelf: 'stretch',
   },
   sourceImage: {
@@ -337,32 +341,40 @@ const styles = StyleSheet.create({
   }, 
    actionBar: {
     flexDirection: 'row',
-    height: 50,
+    height: 40,
     marginBottom: 10,
   },
   actionText: {
     color: Colors.fontText,
+    fontFamily: Fonts.textFont,
+    fontWeight: Fonts.header,
+    fontSize: 20,
   },
   actionButtonHighlight: {
-    flex: .45,
+    flex: 1,
     backgroundColor: Colors.tabSelected,
     borderColor: 'black',
     borderWidth: 1,
+    borderLeftWidth: 0,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderRightWidth: 1,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   actionButton: {
-    flex: .45,
+    flex: 1,
     borderColor: 'black',
-    borderWidth: 1,
+    borderLeftWidth: 1,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderRightWidth: 0,
+    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: Colors.actionBar,
   },
    button: {
-    height: 20,
-    width: 80,
     backgroundColor: 'white',
     borderColor: 'white',
-    justifyContent: 'center'
-  }
-   
+  } 
 });

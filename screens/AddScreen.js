@@ -317,7 +317,7 @@ export default class AddScreen extends React.Component {
 
     static route = {
       navigationBar: {
-      title: <Text style={{fontFamily: Fonts.textFont, fontSize: 18, color:  Colors.backgroundColor}}> Review Scan </Text>,
+      title: <Text style={{fontFamily: Fonts.textFont, fontSize: 18, color:  Colors.backgroundColor}}> Add Entry </Text>,
       backgroundColor: Colors.navBar,
       tintColor: Colors.navTint,
         renderLeft: (route, props) => <View style={{paddingLeft: 7}}><BackButton/></View>,

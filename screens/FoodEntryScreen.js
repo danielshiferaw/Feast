@@ -120,7 +120,7 @@ export default class FoodEntryScreen extends React.Component {
 
    static route = {
     navigationBar: {
-      title: <Text style={{fontFamily: Fonts.TextFont, fontSize: 18, color:  'white'}}> Food Entry </Text>,
+      title: <Text style={{fontFamily: Fonts.textFont, fontSize: 18, color:  'white'}}> Food Entry </Text>,
       backgroundColor: Colors.navBar,
       tintColor: Colors.navTint,
       renderLeft: (route, props) => <View style={{paddingLeft: 7}}><BackButton/></View>,
@@ -181,7 +181,7 @@ export default class FoodEntryScreen extends React.Component {
     const {data} = this.state;
     return (
         <View
-        style={styles.container} 
+        style={styles.listContainer} 
         >
 
         <View style={styles.header}>
@@ -203,9 +203,9 @@ export default class FoodEntryScreen extends React.Component {
         <Button textStyle={styles.shareText} style={styles.button} onPress={this._share}>
            <FontAwesome 
             name={'share'}
-            size={20}
+            size={25}
             color={Colors.tabSelected}
-            style = {{left: 150, top: 8}}
+            style = {{left: 280, top: -180}}
         />
         </Button>
         </View>
@@ -268,6 +268,9 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.background,
     flex: 1,
+  },
+  listContainer: {
+    backgroundColor: Colors.background,
   },
   header: {
     height: 200,

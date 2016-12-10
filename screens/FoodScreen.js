@@ -229,7 +229,7 @@ export default class FoodScreen extends React.Component {
               </View>
               <View style = {styles.scanButton}>
                <Text style={styles.scanText} onPress={this._goToScan}>
-                 Scan again
+                 Scan another food
                 </Text>
               </View>
             </View>          
@@ -350,7 +350,7 @@ const styles = StyleSheet.create({
   },
   addText: {
     color: Colors.textFont,
-    fontSize: 24,
+    fontSize: 18,
     fontFamily: Fonts.textFont,
     fontWeight: Fonts.header,
   },
@@ -360,7 +360,7 @@ const styles = StyleSheet.create({
   },
   scanText: {
     color: Colors.textFont,
-    fontSize: 24,
+    fontSize: 18,
     fontFamily: Fonts.textFont,
     fontWeight: Fonts.header,
   },

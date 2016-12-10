@@ -115,7 +115,7 @@ export default class LogScreen extends React.Component {
 
     static route = {
       navigationBar: {
-        title: <Text style={{fontFamily: 'American Typewriter', fontSize: 24, color:  Colors.tabSelected,}}> Feast </Text>,
+          title: <Text style={{fontFamily: Fonts.textFont, fontSize: 18, color:  'white'}}> View Log </Text>,
          backgroundColor: Colors.navBar,
         tintColor: Colors.navTint,
         renderLeft: (route, props) => <View style={{paddingLeft: 7}}><BackButton/></View>,
@@ -139,12 +139,16 @@ export default class LogScreen extends React.Component {
         <View style={styles.container}>
      
       <View style = {styles.actionBar}>
-        <Button style = {styles.actionButtonHighlight}  textStyle={styles.actionText} >
-              Blood Sugar
-        </Button>
-         <Button style = {styles.actionButton}  textStyle={styles.actionText} onPress={this._goToBook}>
-              Food Entries
-        </Button>
+        <TouchableOpacity style = {styles.actionButtonHighlight} onPress={this._goToLog}>
+              <Text style={styles.actionText}>
+                Blood Sugar Graph
+              </Text>
+          </TouchableOpacity>
+           <TouchableOpacity style = {styles.actionButton} onPress={this._goToBook}>
+            <Text style={styles.actionText}>
+                Food Entries List
+            </Text>
+          </TouchableOpacity>
       </View>
       <View style={styles.graph}>
           <View>
@@ -160,6 +164,8 @@ export default class LogScreen extends React.Component {
          <Image source={require('../assets/images/food_photos/pizza.jpg')} style={styles.pizzaImage}/>
           </TouchableOpacity>
       </View>
+      <Text style={{color: 'black', fontSize: 17, fontFamily: Fonts.textFont, 
+      bottom: 70, left: 20}}>Friday, December 9</Text>
       </View>
       
     );
@@ -177,91 +183,68 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   sourceImage: {
-    height: 300,
-    width: 300,
+    marginTop: 20,
+    height: 360,
+    width: 330,
   },
   lambImage: {
     position: 'absolute',
-    height: 20,
-    width: 20,
+    height: 25,
+    width: 25,
     borderRadius: 10,
-    top: -198,
-    left: -76,
+    top: -237,
+    left: -88,
   },
   eggImage: {
     position: 'absolute',
-    height: 20,
-    width: 20,
+    height: 25,
+    width: 25,
     borderRadius: 10,
-    top: -174,
-    left: -14,
+    top: -220,
+    left: -20,
   },
   pizzaImage: {
     position: 'absolute',
-    height: 20,
-    width: 20,
+    height: 25,
+    width: 25,
     borderRadius: 10,
-    top: -105,
-    left: 57,
+    top: -135,
+    left: 70,
   }, 
   actionBar: {
     flexDirection: 'row',
-    height: 50,
+    height: 40,
     marginBottom: 10,
   },
-  actionButtonHighlight: {
-    flex: .45,
+ actionButtonHighlight: {
+    flex: 1,
     backgroundColor: Colors.tabSelected,
     borderColor: 'black',
     borderWidth: 1,
+    borderLeftWidth: 0,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderRightWidth: 1,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   actionText: {
-    color: Colors.textFont,
+    color: Colors.fontText,
+    fontFamily: Fonts.textFont,
+    fontWeight: Fonts.header,
+    fontSize: 20,
   },
   actionButton: {
-    flex: .45,
+    flex: 1,
     borderColor: 'black',
-    borderWidth: 1,
+    borderLeftWidth: 1,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderRightWidth: 0,
+    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: Colors.actionBar,
-  }, 
-  tickLabelX: {
-    paddingTop: 5,
-    position: 'absolute',
-    bottom: 0,
-    width: 50,
-    fontSize: 14,
-    textAlign: 'center',
-    color: "white",
   },
-
-  ticksYContainer: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-  },
-
-  tickLabelY: {
-    position: 'absolute',
-    left: 0,
-    backgroundColor: 'transparent',
-  },
-
-  tickLabelYText: {
-    fontSize: 14,
-    textAlign: 'center',
-    color: "white"
-  },
-
-  ticksYDot: {
-    position: 'absolute',
-    width: 2,
-    height: 2,
-    backgroundColor: 'black',
-    borderRadius: 100,
-  },
-
   dateText: {
     fontSize: 18,
     textAlign: "center",
