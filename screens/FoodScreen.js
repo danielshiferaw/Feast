@@ -171,7 +171,7 @@ export default class FoodScreen extends React.Component {
         >
 
         <View style={styles.header}>
-        <View style={{padding: 10}}/>
+        <View style={{padding: 5}}/>
             <Image source={{uri: data.source}} style={styles.sourceImage} />   
             <View style={{padding: 5}}/>
           <Text style = {styles.nameText}>
@@ -222,7 +222,9 @@ export default class FoodScreen extends React.Component {
           </View>  
           </View>
            <View style={styles.buttonView}>
+           { /*
               <View style = {styles.addButton}>
+
               <Text style={styles.addText} onPress={this._goToAdd}>
                   Add to Log
               </Text>
@@ -231,7 +233,14 @@ export default class FoodScreen extends React.Component {
                <Text style={styles.scanText} onPress={this._goToScan}>
                  Scan another food
                 </Text>
-              </View>
+              </View> */
+            }
+            <TouchableHighlight style={styles.button} onPress={this._goToAdd} underlayColor='#99d9f4'>
+                <Text style={styles.buttonText}>Add to Log</Text>
+              </TouchableHighlight>
+               <TouchableHighlight style={styles.button} onPress={this._goToScan} underlayColor='#99d9f4'>
+                <Text style={styles.buttonText}>Scan another food</Text>
+              </TouchableHighlight>
             </View>          
         </View>      
     );
@@ -256,7 +265,7 @@ const styles = StyleSheet.create({
   },
   header: {
     height: 200,
-    paddingBottom: 20,
+    paddingBottom: 40,
   },
   sourceImage: {
     paddingTop: 100,
@@ -268,14 +277,14 @@ const styles = StyleSheet.create({
   nameText: {
     color: Colors.textFont,
     textAlign: 'center',
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: Fonts.header,
     fontFamily: Fonts.textFont,
   },
   dateText: {
     color: Colors.textFont,
     textAlign: 'center',
-    fontSize: 12,
+    fontSize: 16,
     fontFamily: Fonts.textFont,
   },
   graph: {
@@ -286,6 +295,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.textFont,
     backgroundColor: 'white',
     flex: 1,
+    height: 240,
   },
   /* following few tags give decent idea of how to 
    * have induce circular borders in general
@@ -340,28 +350,27 @@ const styles = StyleSheet.create({
   steals: {
     backgroundColor: '#4D98E4'
   },
-  buttonView: {
+    buttonView: {
     flexDirection: 'row',
-    height: 100,
+    flex: 1,
+    padding: 20,
+    justifyContent: 'space-between',
+    height: 150,
   },
-  addButton: {
-    flex: .35,
-    padding: 30,
-  },
-  addText: {
-    color: Colors.textFont,
-    fontSize: 18,
-    fontFamily: Fonts.textFont,
+  buttonText: {
+    fontSize: 22,
+    color: Colors.background,
+    alignSelf: 'center',
     fontWeight: Fonts.header,
-  },
-  scanButton: {
-    flex: .35,
-    padding: 30,
-  },
-  scanText: {
-    color: Colors.textFont,
-    fontSize: 18,
     fontFamily: Fonts.textFont,
-    fontWeight: Fonts.header,
   },
+  button: {
+    backgroundColor: Colors.tabSelected,
+    borderColor: '#48BBEC',
+    borderWidth: 1,
+    borderRadius: 8,
+    marginBottom: 10,
+    alignSelf: 'center',
+    justifyContent: 'center'
+  }, 
 });

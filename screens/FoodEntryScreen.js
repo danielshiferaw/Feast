@@ -310,7 +310,7 @@ const styles = StyleSheet.create({
   dateText: {
     color: Colors.textFont,
     textAlign: 'center',
-    fontSize: 12,
+    fontSize: 18,
     fontFamily: Fonts.textFont,
   },
   button: {
